@@ -1,3 +1,5 @@
+'use strict';
+
 let Menu = ({items, opened}) => {
 
     let createLinks = (item, index) => {

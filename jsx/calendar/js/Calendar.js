@@ -1,3 +1,5 @@
+'use strict';
+
 let Calendar = ({ date }) => {
 
     const digit = date.getDate();
