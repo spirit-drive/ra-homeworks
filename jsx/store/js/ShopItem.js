@@ -1,5 +1,4 @@
-let ShopItem = props => {
-    const {item} = props;
+let ShopItem = ({item}) => {
 
     return (
         <div className="main-content">

@@ -1,5 +1,4 @@
-let Menu = props => {
-    const {items, opened} = props;
+let Menu = ({items, opened}) => {
 
     let createLinks = (item, index) => {
         return (

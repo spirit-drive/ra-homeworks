@@ -1,6 +1,5 @@
-let Calendar = (props) => {
+let Calendar = ({ date }) => {
 
-    const { date } = props;
     const digit = date.getDate();
     const day = date.getDay();
     const month = date.getMonth();
