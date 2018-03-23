@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-    // const url = './products.json';
+    // const url = './products.json'; // Можно получить данные из локального файла
     const url = 'https://neto-api.herokuapp.com/etsy';
 
     const Item = ({item}) => {
@@ -46,7 +46,7 @@
 
         let title = methods.getTitle(item.title);
         let price = methods.getPrice(item.currency_code, item.price);
-        let classSizeForQuantity = methods.getSizeForClassNameQuantity(item.quantity);
+        let sizeForClassNameQuantity = methods.getSizeForClassNameQuantity(item.quantity);
 
         return (
             <div className="item">
@@ -58,7 +58,7 @@
                 <div className="item-details">
                     <p className="item-title">{title}</p>
                     <p className="item-price">{price}</p>
-                    <p className={`item-quantity level-${classSizeForQuantity}`}>{item.quantity} left</p>
+                    <p className={`item-quantity level-${sizeForClassNameQuantity}`}>{item.quantity} left</p>
                 </div>
             </div>
         );
@@ -84,17 +84,17 @@
         items: [],
     };
 
-    function getDataCatalog(url, callback) {
-        fetch(url)
-            .then(res => res.json())
-            .then(data => callback(data));
-    }
-
     function renderCatalog(data) {
         ReactDOM.render(
             <Listing items={data} />,
             document.getElementById('root')
         );
+    }
+
+    function getDataCatalog(url, callback) {
+        fetch(url)
+            .then(res => res.json())
+            .then(data => callback(data));
     }
 
     getDataCatalog(url , renderCatalog);
