@@ -1,5 +1,27 @@
 'use strict';
 
-function Stars() {
-  return <ul className="card-body-stars u-clearfix"><li><Star /></li></ul>;
+function Stars({count}) {
+
+  // Если не проходит проверку сразу возвращаем null - нет смысла совершать какие-либо действия если проверка не пройдена
+  if (count < 1 || count > 5) {
+    return null;
+  }
+
+  /* Мне не очень нравится такое решение, потому что оно не масштабируемо.
+  Но, как я понял - это лучше, чем использовать индексы элемента, в качестве ключа.
+  Так как у нас есть ограничение на количество звезд, вижу возможным использование
+  заготовленного массива ключей.
+   */
+  let arrKeys = [
+      'vew',
+      'svb',
+      'vef',
+      'nuy',
+      'zae',
+  ];
+
+  // Создаю массив заданной длинны, заполняю его, чтобы пройтись по нему с помощью map
+  let items = Array(count).fill().map((x, i) => <li key={arrKeys[i]}><Star /></li>);
+
+  return <ul className="card-body-stars u-clearfix">{items}</ul>;
 }
