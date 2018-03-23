@@ -1,9 +1,8 @@
 'use strict';
 
-// Не совсем понятна формулировка "по умолчанию пустой массив", но, думаю это: "{list = []}"
-function MessageHistory({list = []}) {
+const MessageHistory = ({list}) => {
 
-    // Если массив пустой - отображения не будет
+    // Если массив пустой - отображения не будет, завершаем функцию, возвращая пустой массив
     if (!list.length) {
         return null;
     }
@@ -47,4 +46,8 @@ function MessageHistory({list = []}) {
     );
 
     return <ul>{listMessage}</ul>;
-}
+};
+
+MessageHistory.defaultProps = {
+    list: [],
+};

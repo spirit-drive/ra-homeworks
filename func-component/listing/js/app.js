@@ -1,51 +1,52 @@
 'use strict';
 
-function getDataCatalogAndToStart(url, callback) {
-    fetch(url)
-        .then((res) => res.json())
-        .then((data) => callback(data));
-}
+(function () {
+    // const url = './products.json';
+    const url = 'https://neto-api.herokuapp.com/etsy';
 
-function start(data) {
+    const Item = ({item}) => {
+        let methods = {
 
-    function Item({item}) {
+            getPrice(currencyCode, price) {
+                let resultPrice;
+                switch (currencyCode) {
+                    case "USD":
+                        resultPrice = `$${price}`;
+                        break;
+                    case "EUR":
+                        resultPrice = `€${price}`;
+                        break;
+                    default:
+                        resultPrice = `${price} GBP`
+                }
+                return resultPrice;
+            },
 
-        function getPrice(currencyCode, price) {
-            let resultPrice;
-            switch (currencyCode){
-                case "USD":
-                    resultPrice = `$${price}`;
-                    break;
-                case "EUR":
-                    resultPrice = `€${price}`;
-                    break;
-                default:
-                    resultPrice = `${price} GBP`
+            getSizeForClassNameQuantity(quantity) {
+
+                if (quantity <= 10){
+                    return "low";
+                } else if (quantity > 10 && quantity <= 20) {
+                    return "medium";
+                } else if (quantity > 20) {
+                    return "high";
+                }
+
+            },
+
+            getTitle(text) {
+
+                if (text.length > 50){
+                    return `${text.slice(0, 50)}...`
+                }
+
+                return text;
             }
-            return resultPrice;
         };
 
-        function getSizeForClassNameQuantity(quantity) {
-
-            if (quantity <= 10){
-                return "low";
-            } else if (quantity > 10 && quantity <= 20) {
-                return "medium";
-            } else if (quantity > 20) {
-                return "high";
-            }
-
-        };
-
-        function getTitle(text) {
-
-            if (text.length > 50){
-                return `${text.slice(0, 50)}...`
-            }
-
-            return text;
-        };
-
+        let title = methods.getTitle(item.title);
+        let price = methods.getPrice(item.currency_code, item.price);
+        let classSizeForQuantity = methods.getSizeForClassNameQuantity(item.quantity);
 
         return (
             <div className="item">
@@ -55,35 +56,55 @@ function start(data) {
                     </a>
                 </div>
                 <div className="item-details">
-                    <p className="item-title">{getTitle(item.title)}</p>
-                    <p className="item-price">{getPrice(item.currency_code, item.price)}</p>
-                    {/*Хочу получить комментарий по поводу следующей строки, рекомендуется ли так делать или нет?*/}
-                    <p className={`item-quantity level-${getSizeForClassNameQuantity(item.quantity)}`}>{item.quantity} left</p>
+                    <p className="item-title">{title}</p>
+                    <p className="item-price">{price}</p>
+                    <p className={`item-quantity level-${classSizeForQuantity}`}>{item.quantity} left</p>
                 </div>
             </div>
         );
     };
 
-    function Listing({items}) {
-        let itemList = items.map(item => <Item key={item.listing_id} item={item} />);
+    Item.propTypes = {
+        item: React.PropTypes.object
+    };
+    Item.defaultProps = {
+        item: {},
+    };
 
+    const Listing = ({items}) => {
+        let itemList = items.map(item => <Item key={item.listing_id} item={item} />);
         return <div className="item-list">{itemList}</div>
     };
 
-    ReactDOM.render(
-        <Listing items={data} />,
-        document.getElementById('root')
-    );
-}
+    Listing.propTypes = {
+        // "Массив объектов"... можно ли вообще задавать вложенность типизации? Например массив строк, массив объектов?
+        items: React.PropTypes.array
+    };
+    Listing.defaultProps = {
+        items: [],
+    };
 
-getDataCatalogAndToStart('https://neto-api.herokuapp.com/etsy' , start);
+    function getDataCatalog(url, callback) {
+        fetch(url)
+            .then(res => res.json())
+            .then(data => callback(data));
+    }
 
-// getDataCatalogAndToStart('./products.json' , start);
+    function renderCatalog(data) {
+        ReactDOM.render(
+            <Listing items={data} />,
+            document.getElementById('root')
+        );
+    }
 
+    getDataCatalog(url , renderCatalog);
 
-
-// Интересный пример работы
-// (async function() {
-//     let data = await fetch('./products.json');
-//     console.log(await data.json());
-// })();
+// Интересный пример работы. Стоит ли использовать это? Конечно, это бы упростило код
+//     (async function() {
+//         let data = await fetch(url);
+//         ReactDOM.render(
+//             <Listing items={await data.json()} />,
+//             document.getElementById('root')
+//         );
+//     })();
+}());
