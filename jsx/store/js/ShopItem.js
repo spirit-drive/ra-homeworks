@@ -1,6 +1,6 @@
 'use strict';
 
-let ShopItem = ({item}) => {
+const ShopItem = ({item}) => {
     return (
         <div className="main-content">
             <h2>{item.brand}</h2>

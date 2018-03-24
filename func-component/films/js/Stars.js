@@ -41,7 +41,7 @@ function Stars({count}) {
 }
 
 Stars.propTypes = {
-    count: React.PropTypes.number
+    count: PropTypes.number
 };
 Stars.defaultProps = {
     count: 0,

@@ -4,45 +4,46 @@
     // const url = './products.json'; // Можно получить данные из локального файла
     const url = 'https://neto-api.herokuapp.com/etsy';
 
-    const Item = ({item}) => {
-        let methods = {
+    let methods = {
 
-            getPrice(currencyCode, price) {
-                let resultPrice;
-                switch (currencyCode) {
-                    case "USD":
-                        resultPrice = `$${price}`;
-                        break;
-                    case "EUR":
-                        resultPrice = `€${price}`;
-                        break;
-                    default:
-                        resultPrice = `${price} GBP`
-                }
-                return resultPrice;
-            },
-
-            getSizeForClassNameQuantity(quantity) {
-
-                if (quantity <= 10){
-                    return "low";
-                } else if (quantity > 10 && quantity <= 20) {
-                    return "medium";
-                } else if (quantity > 20) {
-                    return "high";
-                }
-
-            },
-
-            getTitle(text) {
-
-                if (text.length > 50){
-                    return `${text.slice(0, 50)}...`
-                }
-
-                return text;
+        getPrice(currencyCode, price) {
+            let resultPrice;
+            switch (currencyCode) {
+                case "USD":
+                    resultPrice = `$${price}`;
+                    break;
+                case "EUR":
+                    resultPrice = `€${price}`;
+                    break;
+                default:
+                    resultPrice = `${price} GBP`
             }
-        };
+            return resultPrice;
+        },
+
+        getSizeForClassNameQuantity(quantity) {
+
+            if (quantity <= 10){
+                return "low";
+            } else if (quantity > 10 && quantity <= 20) {
+                return "medium";
+            } else if (quantity > 20) {
+                return "high";
+            }
+
+        },
+
+        getTitle(text) {
+
+            if (text.length > 50){
+                return `${text.slice(0, 50)}...`
+            }
+
+            return text;
+        }
+    };
+
+    const Item = ({item}) => {
 
         let title = methods.getTitle(item.title);
         let price = methods.getPrice(item.currency_code, item.price);
@@ -65,7 +66,7 @@
     };
 
     Item.propTypes = {
-        item: React.PropTypes.object
+        item: PropTypes.object
     };
     Item.defaultProps = {
         item: {},
@@ -77,8 +78,7 @@
     };
 
     Listing.propTypes = {
-        // "Массив объектов"... можно ли вообще задавать вложенность типизации? Например массив строк, массив объектов?
-        items: React.PropTypes.array
+        items: PropTypes.arrayOf(PropTypes.object)
     };
     Listing.defaultProps = {
         items: [],
@@ -94,17 +94,22 @@
     function getDataCatalog(url, callback) {
         fetch(url)
             .then(res => res.json())
-            .then(data => callback(data));
+            .then(data => callback(data))
+            .catch(e => console.log(e));
     }
 
     getDataCatalog(url , renderCatalog);
 
 // Интересный пример работы. Стоит ли использовать это? Конечно, это бы упростило код
 //     (async function() {
-//         let data = await fetch(url);
-//         ReactDOM.render(
-//             <Listing items={await data.json()} />,
-//             document.getElementById('root')
-//         );
+//         try {
+//             let data = await fetch(url);
+//             ReactDOM.render(
+//                 <Listing items={await data.json()} />,
+//                 document.getElementById('root')
+//             );
+//         } catch(e) {
+//             console.log(e);
+//         }
 //     })();
 }());
