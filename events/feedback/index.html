@@ -12,15 +12,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
   <script type="text/babel" src="./js/FeedbackForm.js"></script>
   <script type="text/babel">
     const form = {
-      salutation: 'Мисис',
+      salutation: 'Миссис',
       name: 'Алевтина',
       subject: 'У меня важный вопрос',
       message: 'Как оформить доставку?',
       email: 'mis@test.co',
-      snacks: ['пирог']
+      snacks: ['пиццу', 'пирог']
     };
 
     function App() {
