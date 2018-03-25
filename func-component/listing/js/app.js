@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
     // const url = './products.json'; // Можно получить данные из локального файла
     const url = 'https://neto-api.herokuapp.com/etsy';
 

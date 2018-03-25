@@ -53,12 +53,13 @@ class App extends React.Component {
         backgroundColor: this.state.color
       };
     }
-    console.log(props);
+    // console.log(props);
     return (
       <figure {...props}>
         <HexInput
           value={this.state.color}
-          onChange={this.change.bind(this)} />
+          onChange={this.change.bind(this)}
+        />
         <div className="message js-message">{this.state.result}</div>
       </figure>
     );
