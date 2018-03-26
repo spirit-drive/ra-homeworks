@@ -10,7 +10,7 @@ const FeedbackForm = ({data}) => {
             <Subject subject={data.subject}/>
             <Message message={data.message} />
             <CheckboxGroup snacks={data.snacks}/>
-            <button className="contact-form__button" type="submit">Отправить сообщение!</button>
+            <Submit />
             <output id="result" />
         </form>
     )
@@ -36,59 +36,47 @@ const Header = () => <div className="testing"><p>Чем мы можем помо
 
 const OptionSalutation = ({salutation}) => {
 
-    // Можно, конечно, input обернуть в label, но интересно сделать так
-    const result = getDualArray(['Мистер', 'Миссис', 'Мис']).map((item, i) => {
-        return i % 2 ? (
-            <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mr">{item}</label>
-        ) : (
-            <input
-                className="contact-form__input contact-form__input--radio"
-                id="salutation-mr"
-                checked={item === salutation ? true : null}
-                name="salutation"
-                type="radio"
-                value={item}
-            />
-        )
-    });
+    let checked;
+    // Только если есть приветствие имеет смысл проверять
+    if (salutation) {
+        ['Мистер', 'Мисис', 'Мис'].map((item, i) => {
+            if (salutation === item) {
+                checked = i;
+            }
+        });
+    }
 
     return (
+        <div className="contact-form__input-group" ref={element => salutationRadio = element}>
+            <input className="contact-form__input contact-form__input--radio" defaultChecked={checked === 0} id="salutation-mr" name="salutation" type="radio" value="Мистер"/>
+            <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mr">Мистер</label>
+            <input className="contact-form__input contact-form__input--radio" defaultChecked={checked === 1} id="salutation-mrs" name="salutation" type="radio" value="Мисис"/>
+            <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mrs">Мисис</label>
+            <input className="contact-form__input contact-form__input--radio" defaultChecked={checked === 2} id="salutation-ms" name="salutation" type="radio" value="Мис"/>
+            <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-ms">Мис</label>
+        </div>
+    );
+};
+
+const Name =({name}) => {
+    const handler = e => {
+        console.log(e.currentTarget.value);
+    };
+    return (
         <div className="contact-form__input-group">
-            {result}
+            <label className="contact-form__label" htmlFor="name">Имя</label>
+            <input
+                className="contact-form__input contact-form__input--text"
+                id="name"
+                name="name"
+                type="text"
+                defaultValue={name}
+                onChange={handler}
+                ref={element => nameInput = element}
+            />
         </div>
     )
 };
-
-class Name extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: props.name
-        }
-    }
-
-    render() {
-        const handler = e => {
-            this.setState({
-                name: e.currentTarget.value
-            })
-        };
-        return (
-            <div className="contact-form__input-group">
-                <label className="contact-form__label" htmlFor="name">Имя</label>
-                <input
-                    className="contact-form__input contact-form__input--text"
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={this.state.name}
-                    onChange={handler}
-                />
-            </div>
-        )
-    }
-
-}
 
 const Email = ({email}) => {
     return (
@@ -99,7 +87,8 @@ const Email = ({email}) => {
                 id="email"
                 name="email"
                 type="email"
-                value={email}
+                defaultValue={email}
+                ref={element => emailInput = element}
             />
         </div>
     )
@@ -113,7 +102,8 @@ const Subject = ({subject}) => {
                 className="contact-form__input contact-form__input--select"
                 id="subject"
                 name="subject"
-                value={subject}
+                defaultValue={subject}
+                ref={element => subjectSelect = element}
             >
                 <option>У меня проблема</option>
                 <option>У меня важный вопрос</option>
@@ -132,56 +122,64 @@ const Message = ({message}) => {
                 name="message"
                 rows="6"
                 cols="65"
-                value={message}
+                defaultValue={message}
+                ref={element => textArea = element}
             />
         </div>
     )
 };
 
 const CheckboxGroup = ({snacks}) => {
-
-    // Можно, конечно, input обернуть в label, но интересно сделать так
-    const result = getDualArray(['пиццу', 'пирог']).map((item, i) => {
-        return i % 2 ? (
-            <label className="contact-form__label contact-form__label--checkbox" htmlFor="snacks-pizza">{item}</label>
-        ) : (
-            <input
-                className="contact-form__input contact-form__input--checkbox"
-                id="snacks-pizza"
-                name="snacks"
-                type="checkbox"
-                checked={getCheckedForSnacks(item, snacks)}
-                value={item}
-            />
-        )
-    });
-
     return (
-        <div className="contact-form__input-group">
+        <div className="contact-form__input-group" ref={element => snacksChecked = element}>
             <p className="contact-form__label--checkbox-group">Хочу получить:</p>
-            {result}
+            <input className="contact-form__input contact-form__input--checkbox" defaultChecked={getCheckedForSnacks('Пиццу', snacks)} id="snacks-pizza" name="snacks" type="checkbox" value="пицца"/>
+            <label className="contact-form__label contact-form__label--checkbox" htmlFor="snacks-pizza">Пиццу</label>
+            <input className="contact-form__input contact-form__input--checkbox" defaultChecked={getCheckedForSnacks('Пирог', snacks)} id="snacks-cake" name="snacks" type="checkbox" value="пирог"/>
+            <label className="contact-form__label contact-form__label--checkbox" htmlFor="snacks-cake">Пирог</label>
         </div>
     )
 };
 
-function getDualArray(array) {
-    // Создаю пустой вспомогательный массив
-    let dualArray = [];
+let nameInput, emailInput, snacksChecked, salutationRadio, textArea, subjectSelect;
 
-    // Бегу по массиву, создавая массив с дубликатами значений
-    array.forEach(item => {
-        dualArray.push(item);
-        dualArray.push(item);
-    });
+const Submit = () => {
+    const saveForm = event => {
+        event.preventDefault();
 
-    return dualArray;
-}
+        let shacks = [];
+        /* Почему у inputs не работают перебирающие методы .map?
+        Проверял по instanceof Array, получил false. Но ведь это же массив
+         */
+        let inputs = snacksChecked.querySelectorAll('input:checked');
+        for (let input of inputs){
+            shacks.push(input.value);
+        }
+        console.log(JSON.stringify({
+            salutation: salutationRadio.querySelector('input:checked').value,
+            name: nameInput.value,
+            email: emailInput.value,
+            subject: subjectSelect.value,
+            message: textArea.value,
+            snacks: shacks
+        }));
+    };
+
+    return <button
+        className="contact-form__button"
+        type="submit"
+        onClick={saveForm}
+    >Отправить сообщение!</button>;
+};
 
 function getCheckedForSnacks(item, snacks) {
+    // Завершаем функцию, если нет такого элемента
+    if (!snacks) {return}
     for (let snack of snacks) {
-        if (item === snack) {
+        // Если независимо от регистра совпадают, значит выбранно
+        if (item.toUpperCase() === snack.toUpperCase()) {
             return true;
         }
     }
-    return null;
+    return;
 }
