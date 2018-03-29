@@ -1,8 +1,29 @@
 'use strict';
+let nameInput, emailInput, snacksChecked, salutationRadio, textArea, subjectSelect;
 
-const FeedbackForm = ({data}) => {
+const FeedbackForm = ({data, onSubmit}) => {
+
+    function onSubmitFunc(event) {
+        event.preventDefault();
+
+        let outputs = JSON.stringify({
+            salutation: salutationRadio.querySelector('input:checked').value,
+            name: nameInput.value,
+            email: emailInput.value,
+            subject: subjectSelect.value,
+            message: textArea.value,
+            snacks: Array.from(snacksChecked.querySelectorAll('input:checked'), item => item.value)
+        });
+
+        onSubmit(outputs);
+
+    }
+
     return (
-        <form className="content__form contact-form">
+        <form
+            className="content__form contact-form"
+            onSubmit={onSubmitFunc}
+        >
             <Header />
             <OptionSalutation salutation={data.salutation} />
             <Name name={data.name} />
@@ -38,8 +59,9 @@ const OptionSalutation = ({salutation}) => {
 
     let checked;
     // Только если есть приветствие имеет смысл проверять
+
     if (salutation) {
-        ['Мистер', 'Мисис', 'Мис'].map((item, i) => {
+        ['Мистер', 'Мисис', 'Мис'].forEach((item, i) => {
             if (salutation === item) {
                 checked = i;
             }
@@ -59,9 +81,6 @@ const OptionSalutation = ({salutation}) => {
 };
 
 const Name =({name}) => {
-    const handler = e => {
-        console.log(e.currentTarget.value);
-    };
     return (
         <div className="contact-form__input-group">
             <label className="contact-form__label" htmlFor="name">Имя</label>
@@ -71,7 +90,6 @@ const Name =({name}) => {
                 name="name"
                 type="text"
                 defaultValue={name}
-                onChange={handler}
                 ref={element => nameInput = element}
             />
         </div>
@@ -130,56 +148,31 @@ const Message = ({message}) => {
 };
 
 const CheckboxGroup = ({snacks}) => {
+
+    function getChecked(item, snacks) {
+
+        // Завершаем функцию, если нет такого элемента
+        if (!snacks) {return}
+
+        for (let snack of snacks) {
+            // Если независимо от регистра совпадают, значит выбранно
+            if (item.toUpperCase() === snack.toUpperCase()) {
+                return true;
+            }
+        }
+
+        return;
+    }
+
     return (
         <div className="contact-form__input-group" ref={element => snacksChecked = element}>
             <p className="contact-form__label--checkbox-group">Хочу получить:</p>
-            <input className="contact-form__input contact-form__input--checkbox" defaultChecked={getCheckedForSnacks('Пиццу', snacks)} id="snacks-pizza" name="snacks" type="checkbox" value="пицца"/>
+            <input className="contact-form__input contact-form__input--checkbox" defaultChecked={getChecked('Пиццу', snacks)} id="snacks-pizza" name="snacks" type="checkbox" value="пицца"/>
             <label className="contact-form__label contact-form__label--checkbox" htmlFor="snacks-pizza">Пиццу</label>
-            <input className="contact-form__input contact-form__input--checkbox" defaultChecked={getCheckedForSnacks('Пирог', snacks)} id="snacks-cake" name="snacks" type="checkbox" value="пирог"/>
+            <input className="contact-form__input contact-form__input--checkbox" defaultChecked={getChecked('Пирог', snacks)} id="snacks-cake" name="snacks" type="checkbox" value="пирог"/>
             <label className="contact-form__label contact-form__label--checkbox" htmlFor="snacks-cake">Пирог</label>
         </div>
     )
 };
 
-let nameInput, emailInput, snacksChecked, salutationRadio, textArea, subjectSelect;
-
-const Submit = () => {
-    const saveForm = event => {
-        event.preventDefault();
-
-        let shacks = [];
-        /* Почему у inputs не работают перебирающие методы .map?
-        Проверял по instanceof Array, получил false. Но ведь это же массив
-         */
-        let inputs = snacksChecked.querySelectorAll('input:checked');
-        for (let input of inputs){
-            shacks.push(input.value);
-        }
-        console.log(JSON.stringify({
-            salutation: salutationRadio.querySelector('input:checked').value,
-            name: nameInput.value,
-            email: emailInput.value,
-            subject: subjectSelect.value,
-            message: textArea.value,
-            snacks: shacks
-        }));
-    };
-
-    return <button
-        className="contact-form__button"
-        type="submit"
-        onClick={saveForm}
-    >Отправить сообщение!</button>;
-};
-
-function getCheckedForSnacks(item, snacks) {
-    // Завершаем функцию, если нет такого элемента
-    if (!snacks) {return}
-    for (let snack of snacks) {
-        // Если независимо от регистра совпадают, значит выбранно
-        if (item.toUpperCase() === snack.toUpperCase()) {
-            return true;
-        }
-    }
-    return;
-}
+const Submit = () => <button className="contact-form__button" type="submit">Отправить сообщение!</button>;
