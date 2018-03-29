@@ -70,10 +70,7 @@ const InputEmail = () => {
                 (charCode === 46)
                 ||
                 // @ A-Z
-                (charCode === 64)
-                ||
-                // @ A-Z
-                (charCode >= 65 && charCode <= 90)
+                (charCode >= 64 && charCode <= 90)
                 ||
                 // a-z
                 (charCode >= 97 && charCode <= 122)
