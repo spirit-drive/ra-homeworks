@@ -1,16 +1,19 @@
 'use strict';
 
-let name, email, password;
+let nameI, email, password;
 const AuthForm = ({onAuth}) => {
     const onSubmit = event => {
         event.preventDefault();
 
+        // Почему когда я присваиваю имя "name" не работает. name - это какой-то другой html object
+        nameI = nameI.value;
+        email = email.value;
+        password = password.value;
         if (onAuth && typeof onAuth === 'function'){
-            console.log(12);
             onAuth({
-                name: name,
-                email: email,
-                password: password,
+                name: nameI,
+                email,
+                password,
             });
         }
     };
@@ -21,9 +24,9 @@ const AuthForm = ({onAuth}) => {
             method="POST"
             onSubmit={onSubmit}
         >
-            <Name />
-            <Email />
-            <Password />
+            <InputName />
+            <InputEmail />
+            <InputPassword />
             <button type="submit">
                 <span>Войти</span>
                 <i className="fa fa-fw fa-chevron-right" />
@@ -35,36 +38,48 @@ AuthForm.propTypes = {
     onAuth: PropTypes.func
 };
 
-const Name = () => {
+const InputName = () => {
     return (
         <div className="Input">
             <input
                 required
                 type="text"
                 placeholder="Имя"
+                ref={element => nameI = element}
             />
             <label />
         </div>
     )
 };
 
-const Email = () => {
+const InputEmail = () => {
     const onChange = e => {
         e.currentTarget.value = [...e.currentTarget.value].filter(symbol => {
+            let charCode = symbol.charCodeAt();
             return (
-                (symbol.charCodeAt() >= 48 && symbol.charCodeAt() <= 57)
+                // 0-9
+                (charCode >= 48 && charCode <= 57)
                 ||
-                (symbol.charCodeAt() === 45)
+                // -
+                (charCode === 45)
                 ||
-                (symbol.charCodeAt() === 95)
+                // _
+                (charCode === 95)
                 ||
-                (symbol.charCodeAt() === 46)
+                // .
+                (charCode === 46)
                 ||
-                (symbol.charCodeAt() >= 64 && symbol.charCodeAt() <= 90)
+                // @ A-Z
+                (charCode === 64)
                 ||
-                (symbol.charCodeAt() >= 97 && symbol.charCodeAt() <= 122)
+                // @ A-Z
+                (charCode >= 65 && charCode <= 90)
+                ||
+                // a-z
+                (charCode >= 97 && charCode <= 122)
             )
         }).join('');
+
     };
 
     return (
@@ -81,17 +96,22 @@ const Email = () => {
     )
 };
 
-const Password = () => {
+const InputPassword = () => {
     const onChange = e => {
         e.currentTarget.value = [...e.currentTarget.value].filter(symbol => {
+            let charCode = symbol.charCodeAt();
             return (
-                (symbol.charCodeAt() >= 48 && symbol.charCodeAt() <= 57)
+                // 0-9
+                (charCode >= 48 && charCode <= 57)
                 ||
-                (symbol.charCodeAt() === 95)
+                // _
+                (charCode === 95)
                 ||
-                (symbol.charCodeAt() >= 65 && symbol.charCodeAt() <= 90)
+                // A-Z
+                (charCode >= 65 && charCode <= 90)
                 ||
-                (symbol.charCodeAt() >= 97 && symbol.charCodeAt() <= 122)
+                // a-z
+                (charCode >= 97 && charCode <= 122)
             )
         }).join('');
 
@@ -103,7 +123,7 @@ const Password = () => {
                 required
                 type="password"
                 placeholder="Пароль"
-                ref={element => password = element}
+                ref={element => {password = element}}
                 onChange={onChange}
 
             />
