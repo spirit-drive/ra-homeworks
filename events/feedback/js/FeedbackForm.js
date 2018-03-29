@@ -3,7 +3,7 @@ let nameInput, emailInput, snacksChecked, salutationRadio, textArea, subjectSele
 
 const FeedbackForm = ({data, onSubmit}) => {
 
-    function onSubmitFunc(event) {
+    const onSubmitFunc = event => {
         event.preventDefault();
 
         let outputs = JSON.stringify({
@@ -17,7 +17,7 @@ const FeedbackForm = ({data, onSubmit}) => {
 
         onSubmit(outputs);
 
-    }
+    };
 
     return (
         <form
