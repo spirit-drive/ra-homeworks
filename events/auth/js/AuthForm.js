@@ -53,31 +53,8 @@ const InputName = () => {
 };
 
 const InputEmail = () => {
-    const onChange = e => {
-        e.currentTarget.value = [...e.currentTarget.value].filter(symbol => {
-            let charCode = symbol.charCodeAt();
-            return (
-                // 0-9
-                (charCode >= 48 && charCode <= 57)
-                ||
-                // -
-                (charCode === 45)
-                ||
-                // _
-                (charCode === 95)
-                ||
-                // .
-                (charCode === 46)
-                ||
-                // @ A-Z
-                (charCode >= 64 && charCode <= 90)
-                ||
-                // a-z
-                (charCode >= 97 && charCode <= 122)
-            )
-        }).join('');
-
-    };
+    
+    const onChange = e => e.currentTarget.value = e.currentTarget.value.match(/[a-zA-Z1-9@\-\_\.]*/g).join('');
 
     return (
         <div className="Input">
@@ -94,25 +71,8 @@ const InputEmail = () => {
 };
 
 const InputPassword = () => {
-    const onChange = e => {
-        e.currentTarget.value = [...e.currentTarget.value].filter(symbol => {
-            let charCode = symbol.charCodeAt();
-            return (
-                // 0-9
-                (charCode >= 48 && charCode <= 57)
-                ||
-                // _
-                (charCode === 95)
-                ||
-                // A-Z
-                (charCode >= 65 && charCode <= 90)
-                ||
-                // a-z
-                (charCode >= 97 && charCode <= 122)
-            )
-        }).join('');
 
-    };
+    const onChange = e => e.currentTarget.value = e.currentTarget.value.match(/[a-zA-Z1-9\_]*/g).join('');
 
     return (
         <div className="Input">
