@@ -53,8 +53,8 @@ const InputName = () => {
 };
 
 const InputEmail = () => {
-    
-    const onChange = e => e.currentTarget.value = e.currentTarget.value.match(/[a-zA-Z1-9@\-\_\.]*/g).join('');
+
+    const onChange = e => e.currentTarget.value = e.currentTarget.value.match(/[a-zA-Z1-9@_.\-]*/g).join('');
 
     return (
         <div className="Input">
@@ -72,7 +72,7 @@ const InputEmail = () => {
 
 const InputPassword = () => {
 
-    const onChange = e => e.currentTarget.value = e.currentTarget.value.match(/[a-zA-Z1-9\_]*/g).join('');
+    const onChange = e => e.currentTarget.value = e.currentTarget.value.match(/[a-zA-Z1-9_]*/g).join('');
 
     return (
         <div className="Input">
