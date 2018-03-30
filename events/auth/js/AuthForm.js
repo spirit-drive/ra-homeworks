@@ -1,14 +1,18 @@
 'use strict';
 
 let nameI, email, password;
+
 const AuthForm = ({onAuth}) => {
+
     const onSubmit = event => {
+
         event.preventDefault();
 
         // Почему когда я присваиваю имя "name" не работает. name - это какой-то другой html object
         nameI = nameI.value;
         email = email.value;
         password = password.value;
+
         if (onAuth && typeof onAuth === 'function'){
             onAuth({
                 name: nameI,
@@ -17,6 +21,7 @@ const AuthForm = ({onAuth}) => {
             });
         }
     };
+
     return (
         <form
             className="ModalForm"
@@ -34,6 +39,7 @@ const AuthForm = ({onAuth}) => {
         </form>
     )
 };
+
 AuthForm.propTypes = {
     onAuth: PropTypes.func
 };
