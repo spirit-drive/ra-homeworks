@@ -8,7 +8,7 @@ const AuthForm = ({onAuth}) => {
 
         event.preventDefault();
 
-        // Почему когда я присваиваю имя "name" не работает. name - это какой-то другой html object
+        // Почему когда я присваиваю имя "name" не работает? name - это какой-то другой html object
         nameI = nameI.value;
         email = email.value;
         password = password.value;
@@ -86,7 +86,7 @@ const InputPassword = () => {
                 required
                 type="password"
                 placeholder="Пароль"
-                ref={element => {password = element}}
+                ref={element => password = element}
                 onChange={onChange}
 
             />

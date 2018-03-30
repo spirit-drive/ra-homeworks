@@ -161,7 +161,7 @@ const CheckboxGroup = ({snacks}) => {
             }
         }
 
-        return;
+        return false;
     }
 
     return (
