@@ -1,9 +1,13 @@
 'use strict';
 
 const Toolbar = (props) => {
+
   const { filters, selected, onSelectFilter } = props;
+
   const renderFilters = (filters) => {
+
     return filters.map((filter, i) => {
+
       const className = filter === selected ? "filter-selected" : "filter";
       return (
         <button
@@ -13,7 +17,9 @@ const Toolbar = (props) => {
             {filter}
         </button>
       );
+
     });
+
   };
 
   return (
