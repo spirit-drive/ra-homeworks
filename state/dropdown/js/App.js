@@ -1,24 +1,25 @@
-var App = React.createClass({
-  defaultProps: {
-    options: []
-  },
-  getInitialState: function () {
-    return {
-      active: this.props.options[0],
-      open: false
-    };
-  },
-  handleChange: function (option) {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        active: props.options[0],
+        open: false
+    }
+  }
+
+  handleChange = option => {
     this.setState({
       active: option
     });
-  },
-  toggleOpen: function () {
+  };
+
+  toggleOpen = () => {
     this.setState({
       open: !this.state.open
     });
-  },
-  render: function () {
+  };
+
+  render() {
     return (
       <div className="container">
         <div className={`dropdown-wrapper ${this.state.open ? "open" : ""}`} >
@@ -29,9 +30,11 @@ var App = React.createClass({
           <ul className="dropdown">
             {this.props.options.map((option, i) => (
               <li
+                key={`item-${i}`}
                 className={option === this.state.active ? "active" : ""}
-                onClick={() => this.handleChange(option)} >
-                  <a href="#">{option}</a>
+                onClick={() => this.handleChange(option)}
+              >
+                  <a key={`link-${i}`} href="#">{option}</a>
               </li>
             ))}
           </ul>
@@ -39,4 +42,8 @@ var App = React.createClass({
       </div>
     );
   }
-});
+}
+
+App.defaultProps = {
+  options: []
+};

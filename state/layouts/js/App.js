@@ -15,7 +15,6 @@ class App extends React.Component {
   onSwitch = () => {
     let cardView = this.state.icon === VIEW_MODULE;
     let icon = cardView ? VIEW_LIST : VIEW_MODULE;
-
     this.setState({
         icon,
         cardView,
