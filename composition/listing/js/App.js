@@ -1,6 +1,6 @@
 'use strict';
 
-const itemsRender = items => {
+const ItemsForColor = ({items}) => {
     let getColor = type => {
         switch(type) {
             case 'unisex':
@@ -11,11 +11,15 @@ const itemsRender = items => {
                 return "orange";
         }
     };
-    return items.map(item => <Item color={getColor(item.type)} item={item} />);
+    return (
+        <div>
+            {items.map(item => <Item color={getColor(item.type)} item={item} />)}
+        </div>
+    )
 };
 
-const App = props => (
+const App = ({items}) => (
     <main>
-        {props.children}
+        <ItemsForColor items={items} />
     </main>
 );
