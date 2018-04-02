@@ -35,8 +35,19 @@
       pic: './i/sample52.jpg'
     }];
 
+    let getColor = type => {
+        switch(type) {
+            case 'unisex':
+                return "black";
+            case 'male':
+                return "blue";
+            case 'female':
+                return "orange";
+        }
+    };
+
     ReactDOM.render(
-      <App items={items} />,
+      <App items={items} getColor={getColor} />,
       document.querySelector('.listing')
     );
   </script>

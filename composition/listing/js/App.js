@@ -1,17 +1,6 @@
 'use strict';
 
-getColor = type => {
-    switch(type) {
-        case 'unisex':
-            return "black";
-        case 'male':
-            return "blue";
-        case 'female':
-            return "orange";
-    }
-};
-
-const App = ({items}) => (
+const App = ({items, getColor}) => (
     <main>
         {items.map(item => <Item color={getColor(item.type)} item={item} />)}
     </main>
