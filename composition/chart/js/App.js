@@ -32,36 +32,62 @@ const ChartsItem = ({classNameMod, style, color, item, itemIndex}) => {
     );
 };
 
+let getSeries = (serie, colors, max) => {
+    return serie.map((item, itemIndex) => {
 
-const ChartsSerie = (props) => {
+        let color = colors[itemIndex];
 
+        let size = item / (max) * 100;
+
+        let style = {
+            backgroundColor: color,
+            opacity: item/max + .05,
+            zIndex: item,
+            height: size + '%'
+        };
+
+        return (
+            <ChartsItem
+                style={style}
+                itemIndex={itemIndex}
+                color={color}
+                item={item}
+            />
+        );
+    })
+};
+
+const ChartsSerie = ({serieIndex, labels, colors, max, serie}) => {
     return (
         <div className="Charts--serie"
-             key={ props.serieIndex }
-             style={{ height: 'auto' }}
+             key={ serieIndex }
+             style={{height: 250}}
         >
-            <label>{ props.series[props.serieIndex] }</label>
-            { props.serie.map((item, itemIndex) => {
+            <label>{ labels[serieIndex] }</label>
+            { getSeries (serie, colors, max)}
+        </div>
+    )
+};
 
-                let color = props.colors[itemIndex];
+let getChartsSerie = (serie, serieIndex, labels, colors, max) => {
+    let sortedSerie = serie.slice(0);
+    let sum = serie.reduce((carry, current) => carry + current, 0);
+    sortedSerie.sort(compareNumbers);
 
-                let size = item / (props.max) * 100;
+    return (
+        <ChartsSerie serieIndex={serieIndex} labels={labels} colors={colors} max={max} serie={serie}/>
+    );
+};
 
-                let style = {
-                    backgroundColor: color,
-                    opacity: (item/props.max + .05),
-                    zIndex: item,
-                    width: size + '%'
-                };
-                return (
-                    <ChartsItem
-                        style={style}
-                        itemIndex={itemIndex}
-                        color={color}
-                        item={item}
-                    />
-                );
-            }) }
+let chartsContent = (data, labels, colors, max) => {
+    return data.map((serie, serieIndex) => getChartsSerie(serie, serieIndex, labels, colors, max))
+};
+
+const Charts = ({data, labels, colors, max}) => {
+
+    return (
+        <div className="Charts">
+            { chartsContent(data, labels, colors, max)}
         </div>
     );
 };
@@ -98,44 +124,7 @@ class App extends React.Component {
 		return (
 			<section>
 
-				<div className="Charts">
-				  { data.map((serie, serieIndex) => {
-					let sortedSerie = serie.slice(0);
-					let sum = serie.reduce((carry, current) => carry + current, 0);
-					sortedSerie.sort(compareNumbers);
-
-					return (
-					  <div className="Charts--serie"
-						key={ serieIndex }
-						style={{height: 250}}
-					  >
-						  <label>{ labels[serieIndex] }</label>
-						  { serie.map((item, itemIndex) => {
-
-							let color = colors[itemIndex];
-
-                            let size = item / (max) * 100;
-
-							let style = {
-							  backgroundColor: color,
-							  opacity: item/max + .05,
-							  zIndex: item,
-							  height: size + '%'
-							};
-
-							 return (
-							     <ChartsItem
-                                     style={style}
-                                     itemIndex={itemIndex}
-                                     color={color}
-                                     item={item}
-                                 />
-                             );
-						  }) }
-					  </div>
-					);
-				  }) }
-				</div>
+				<Charts data={data} labels={labels} colors={colors} max={max}/>
 
 				<div className="Charts">
 					{ data.map((serie, serieIndex) => {
