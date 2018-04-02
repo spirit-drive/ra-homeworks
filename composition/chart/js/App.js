@@ -32,44 +32,8 @@ const ChartsItem = ({classNameMod, style, color, item, itemIndex}) => {
     );
 };
 
-// class App extends React.Component {
-//     // const {serieIndex, serie, series, colors, max} = props;
-//     render () {
-//         return (
-//             <div className="Charts--serie"
-//                  key={ serieIndex }
-//                  style={{ height: 'auto' }}
-//             >
-//                 <label>{ series[serieIndex] }</label>
-//                 { serie.map((item, itemIndex) => {
-//
-//                     let color = colors[itemIndex];
-//
-//                     let size = item / (max) * 100;
-//
-//                     let style = {
-//                         backgroundColor: color,
-//                         opacity: (item/max + .05),
-//                         zIndex: item,
-//                         width: size + '%'
-//                     };
-//                     console.log(this);
-//                     return (
-//                         <ChartsItem
-//                             style={style}
-//                             itemIndex={itemIndex}
-//                             color={color}
-//                             item={item}
-//                         />
-//                     );
-//                 }) }
-//             </div>
-//         );
-//     }
-// };
 
 const ChartsSerie = (props) => {
-// ChartsSerie = ({serieIndex, serie, series, colors, max}) => {
 
     return (
         <div className="Charts--serie"
@@ -89,8 +53,6 @@ const ChartsSerie = (props) => {
                     zIndex: item,
                     width: size + '%'
                 };
-                console.log(props);
-                // return props.children[];
                 return (
                     <ChartsItem
                         style={style}

@@ -1,6 +1,6 @@
 'use strict';
 
-const Wrapper = ({items}) => {
+const itemsRender = items => {
     let getColor = type => {
         switch(type) {
             case 'unisex':
@@ -11,15 +11,11 @@ const Wrapper = ({items}) => {
                 return "orange";
         }
     };
-    return (
-        <div>
-            {items.map(item => <Item color={getColor(item.type)} item={item} />)}
-        </div>
-    )
+    return items.map(item => <Item color={getColor(item.type)} item={item} />);
 };
 
 const App = ({items}) => (
     <main>
-        <Wrapper items={items} />
+        {itemsRender(items)}
     </main>
 );
