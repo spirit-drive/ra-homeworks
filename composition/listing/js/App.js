@@ -14,8 +14,8 @@ const itemsRender = items => {
     return items.map(item => <Item color={getColor(item.type)} item={item} />);
 };
 
-const App = ({items}) => (
+const App = props => (
     <main>
-        {itemsRender(items)}
+        {props.children}
     </main>
 );
