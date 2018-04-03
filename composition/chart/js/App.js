@@ -239,11 +239,11 @@ const Legend = ({labels, colors}) => (
     </div>
 );
 
-const ChartsItem = ({classNameMod, style, color, item, itemIndex}) => {
-    classNameMod = classNameMod ? ` ${classNameMod}`: '';
+const ChartsItem = ({additionalClassName, style, color, item, itemIndex}) => {
+    additionalClassName = additionalClassName ? ` ${additionalClassName}`: '';
     return (
         <div
-            className={`Charts--item${classNameMod}`}
+            className={`Charts--item${additionalClassName}`}
             style={ style }
             key={ itemIndex }
         >
@@ -296,14 +296,15 @@ const ChartsItemsFor1 = props => {
         height: size + '%'
     };
 
-    props.children.props = {
-        style,
-        itemIndex: props.itemIndex,
-        color,
-        item: props.item
-    };
-
-    return props.children
+    return (
+        <ChartsItem
+            style={style}
+            color={color}
+            itemIndex={props.itemIndex}
+            item={props.item}
+            additionalClassName={props.additionalClassName}
+        />
+    )
 };
 
 const ChartsItemsFor2 = props => {
@@ -323,15 +324,16 @@ const ChartsItemsFor2 = props => {
         height: size + '%'
     };
 
-    props.children.props = {
-        classNameMod: 'stacked',
-        style,
-        itemIndex: props.itemIndex,
-        color,
-        item: props.item
-    };
+    return (
+        <ChartsItem
+            style={style}
+            color={color}
+            itemIndex={props.itemIndex}
+            item={props.item}
+            additionalClassName={props.additionalClassName}
+        />
+    )
 
-    return props.children
 };
 
 const ChartsItemsFor3 = props => {
@@ -351,15 +353,16 @@ const ChartsItemsFor3 = props => {
         height: size + '%',
         right: ((sortedSerie.indexOf(props.item) / (props.serie.length + 1)) * 100) + '%'
     };
-    props.children.props = {
-        classNameMod: 'layered',
-        style,
-        itemIndex: props.itemIndex,
-        color,
-        item: props.item
-    };
 
-    return props.children;
+    return (
+        <ChartsItem
+            style={style}
+            color={color}
+            itemIndex={props.itemIndex}
+            item={props.item}
+            additionalClassName={props.additionalClassName}
+        />
+    )
 };
 
 const ChartsItemsForHorizontal = props => {
@@ -374,14 +377,16 @@ const ChartsItemsForHorizontal = props => {
         zIndex: props.item,
         width: size + '%'
     };
-    props.children.props = {
-        style,
-        itemIndex: props.itemIndex,
-        color,
-        item: props.item
-    };
 
-    return props.children;
+    return (
+        <ChartsItem
+            style={style}
+            color={color}
+            itemIndex={props.itemIndex}
+            item={props.item}
+            additionalClassName={props.additionalClassName}
+        />
+    )
 };
 
 class App extends React.Component {
@@ -420,9 +425,7 @@ class App extends React.Component {
                     {data.map((serie, serieIndex) => (
                         <ChartsSerie serieIndex={serieIndex} labels={labels} >
                             {serie.map((item, itemIndex) =>  (
-                                <ChartsItemsFor1 serie={serie} item={item} itemIndex={itemIndex} colors={colors} max={max}>
-                                    <ChartsItem />
-                                </ChartsItemsFor1>
+                                <ChartsItemsFor1 serie={serie} item={item} itemIndex={itemIndex} colors={colors} max={max} />
                             ))}
                         </ChartsSerie>
                     ))}
@@ -432,9 +435,7 @@ class App extends React.Component {
                     {data.map((serie, serieIndex) => (
                         <ChartsSerie additionalClassName={'stacked'} serieIndex={serieIndex} labels={labels} >
                             {serie.map((item, itemIndex) => (
-                                <ChartsItemsFor2 serie={serie} item={item} itemIndex={itemIndex} colors={colors} max={max}>
-                                    <ChartsItem />
-                                </ChartsItemsFor2>
+                                <ChartsItemsFor2 serie={serie} item={item} itemIndex={itemIndex} colors={colors} max={max} additionalClassName={'stacked'} />
                             ))}
                         </ChartsSerie>
                     ))}
@@ -444,9 +445,7 @@ class App extends React.Component {
                     {data.map((serie, serieIndex) => (
                         <ChartsSerie additionalClassName={'layered'} serieIndex={serieIndex} labels={labels} >
                             {serie.map((item, itemIndex) => (
-                                <ChartsItemsFor3 serie={serie} item={item} itemIndex={itemIndex} colors={colors} max={max}>
-                                    <ChartsItem />
-                                </ChartsItemsFor3>
+                                <ChartsItemsFor3 serie={serie} item={item} itemIndex={itemIndex} colors={colors} max={max} additionalClassName={'layered'} />
                             ))}
                         </ChartsSerie>
                     ))}
@@ -456,9 +455,7 @@ class App extends React.Component {
                     {data.map((serie, serieIndex) => (
                         <ChartsSerie serieIndex={serieIndex} labels={series} height={'auto'} >
                             {serie.map((item, itemIndex) => (
-                                <ChartsItemsForHorizontal item={item} itemIndex={itemIndex} colors={colors} max={max}>
-                                    <ChartsItem />
-                                </ChartsItemsForHorizontal>
+                                <ChartsItemsForHorizontal item={item} itemIndex={itemIndex} colors={colors} max={max} />
                             ))}
                         </ChartsSerie>
                     ))}
