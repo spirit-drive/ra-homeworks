@@ -37,15 +37,10 @@ const ChartsSerie = props => {
 
     let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}` : '';
 
-    // Пробрасываем additionalClassName внутрь props дочерних элементов
-    props.children.forEach(children => {
-        children.props = Object.assign({}, children.props, { additionalClassName });
-    });
-
     return (
         <div className={`Charts--serie${additionalClassName}`} key={ props.serieIndex } style={{height: props.height}}>
             <label>{ props.labels[props.serieIndex] }</label>
-            {props.children}
+            {props.children(props.serie, additionalClassName)}
         </div>
     )
 };
@@ -59,7 +54,7 @@ const Charts = props => {
 
     return (
         <div className={`Charts${additionalClassName}`}>
-            {props.children}
+            {props.children(props.data)}
         </div>
     );
 };
@@ -159,11 +154,12 @@ class App extends React.Component {
         return (
             <section>
 
-                <Charts>
-                    {data.map((serie, serieIndex) => (
-                        <ChartsSerie serieIndex={serieIndex} labels={labels} >
-                            {serie.map((item, itemIndex) =>  (
-                                <ChartsItem>
+                <Charts data={data}>
+                    {data => data.map((serie, serieIndex) => (
+                        <ChartsSerie serieIndex={serieIndex} labels={labels} serie={serie}>
+                            {(serie, additionalClassName) => serie.map((item, itemIndex) => (
+
+                                <ChartsItem additionalClassName={additionalClassName}>
                                     {this.func1(colors, item, itemIndex, max)}
                                 </ChartsItem>
                             ))}
@@ -171,11 +167,12 @@ class App extends React.Component {
                     ))}
                 </Charts>
 
-                <Charts>
-                    {data.map((serie, serieIndex) => (
-                        <ChartsSerie additionalClassName="stacked" serieIndex={serieIndex} labels={labels} >
-                            {serie.map((item, itemIndex) => (
-                                <ChartsItem>
+                <Charts data={data}>
+                    {data => data.map((serie, serieIndex) => (
+                        <ChartsSerie additionalClassName="stacked" serieIndex={serieIndex} labels={labels} serie={serie}>
+                            {(serie, additionalClassName) => serie.map((item, itemIndex) => (
+
+                                <ChartsItem additionalClassName={additionalClassName}>
                                     {this.func2(colors, item, itemIndex, serie)}
                                 </ChartsItem>
                             ))}
@@ -183,11 +180,12 @@ class App extends React.Component {
                     ))}
                 </Charts>
 
-                <Charts>
-                    {data.map((serie, serieIndex) => (
-                        <ChartsSerie additionalClassName="layered" serieIndex={serieIndex} labels={labels} >
-                            {serie.map((item, itemIndex) => (
-                                <ChartsItem>
+                <Charts data={data}>
+                    {data => data.map((serie, serieIndex) => (
+                        <ChartsSerie additionalClassName="layered" serieIndex={serieIndex} labels={labels} serie={serie}>
+                            {(serie, additionalClassName) => serie.map((item, itemIndex) => (
+
+                                <ChartsItem additionalClassName={additionalClassName}>
                                     {this.func3(colors, item, itemIndex, serie, max)}
                                 </ChartsItem>
                             ))}
@@ -195,11 +193,12 @@ class App extends React.Component {
                     ))}
                 </Charts>
 
-                <Charts additionalClassName="horizontal">
-                    {data.map((serie, serieIndex) => (
-                        <ChartsSerie serieIndex={serieIndex} labels={series} height="auto" >
-                            {serie.map((item, itemIndex) => (
-                                <ChartsItem>
+                <Charts additionalClassName="horizontal" data={data}>
+                    {data => data.map((serie, serieIndex) => (
+                        <ChartsSerie serieIndex={serieIndex} labels={series} height="auto" serie={serie}>
+                            {(serie, additionalClassName) => serie.map((item, itemIndex) => (
+
+                                <ChartsItem additionalClassName={additionalClassName}>
                                     {this.func1(colors, item, itemIndex, max, 'width')}
                                 </ChartsItem>
                             ))}
