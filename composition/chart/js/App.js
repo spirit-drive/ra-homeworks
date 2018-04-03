@@ -105,7 +105,9 @@ class App extends React.Component {
         this.setState({ data });
     };
 
-    func1 = (colors, item, itemIndex, max) => {
+    func1 = (colors, item, itemIndex, max, side) => {
+
+        side = side || 'height';
 
         let color = colors[itemIndex];
 
@@ -115,7 +117,7 @@ class App extends React.Component {
             backgroundColor: color,
             opacity: item / max + .05,
             zIndex: item,
-            height: size + '%'
+            [side]: size + '%'
         };
 
         return {style, color, item, itemIndex}
@@ -162,24 +164,6 @@ class App extends React.Component {
 
     };
 
-    func4 = (colors, item, itemIndex, max) => {
-
-
-        let color = colors[itemIndex];
-
-        let size = item / max * 100;
-
-        let style = {
-            backgroundColor: color,
-            opacity: item / max + .05,
-            zIndex: item,
-            width: size + '%'
-        };
-
-        return {style, color, item, itemIndex}
-
-    };
-
     render() {
         const { data, colors, labels, series } = this.state;
         const max = data.reduce((max, serie) => Math.max(max, serie.reduce((serieMax, item) => Math.max(serieMax, item), 0)), 0);
@@ -188,11 +172,26 @@ class App extends React.Component {
             <section>
 
                 <Charts>
+                    <div>
+                        {data.map((serie, serieIndex) => (
+                            <ChartsSerie serieIndex={serieIndex} labels={labels} >
+                                {serie.map((item, itemIndex) =>  (
+                                    <ChartsItems>
+                                        {this.func1(colors, item, itemIndex, max)}
+                                    </ChartsItems>
+                                ))}
+                            </ChartsSerie>
+                        ))}
+                    </div>
+
+                </Charts>
+
+                <Charts>
                     {data.map((serie, serieIndex) => (
-                        <ChartsSerie serieIndex={serieIndex} labels={labels} >
-                            {serie.map((item, itemIndex) =>  (
+                        <ChartsSerie additionalClassName="stacked" serieIndex={serieIndex} labels={labels} >
+                            {serie.map((item, itemIndex) => (
                                 <ChartsItems>
-                                    {this.func1 (colors, item, itemIndex, max)}
+                                    {this.func2(colors, item, itemIndex, serie)}
                                 </ChartsItems>
                             ))}
                         </ChartsSerie>
@@ -201,22 +200,10 @@ class App extends React.Component {
 
                 <Charts>
                     {data.map((serie, serieIndex) => (
-                        <ChartsSerie additionalClassName={'stacked'} serieIndex={serieIndex} labels={labels} >
+                        <ChartsSerie additionalClassName="layered" serieIndex={serieIndex} labels={labels} >
                             {serie.map((item, itemIndex) => (
                                 <ChartsItems>
-                                    {this.func2 (colors, item, itemIndex, serie)}
-                                </ChartsItems>
-                            ))}
-                        </ChartsSerie>
-                    ))}
-                </Charts>
-
-                <Charts>
-                    {data.map((serie, serieIndex) => (
-                        <ChartsSerie additionalClassName={'layered'} serieIndex={serieIndex} labels={labels} >
-                            {serie.map((item, itemIndex) => (
-                                <ChartsItems>
-                                    {this.func3 (colors, item, itemIndex, serie, max)}
+                                    {this.func3(colors, item, itemIndex, serie, max)}
                                 </ChartsItems>
                             ))}
                         </ChartsSerie>
@@ -225,10 +212,10 @@ class App extends React.Component {
 
                 <Charts additionalClassName="horizontal">
                     {data.map((serie, serieIndex) => (
-                        <ChartsSerie serieIndex={serieIndex} labels={series} height={'auto'} >
+                        <ChartsSerie serieIndex={serieIndex} labels={series} height="auto" >
                             {serie.map((item, itemIndex) => (
                                 <ChartsItems>
-                                    {this.func4 (colors, item, itemIndex, max)}
+                                    {this.func1(colors, item, itemIndex, max, 'width')}
                                 </ChartsItems>
                             ))}
                         </ChartsSerie>
