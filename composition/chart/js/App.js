@@ -11,40 +11,39 @@ const Legend = ({labels, colors}) => (
         { labels.map((label, labelIndex) => {
             return (
                 <div>
-                    <span className="Legend--color" style={{ backgroundColor: colors[labelIndex % colors.length]  }} />
-                    <span className="Legend--label">{ label }</span>
+                    <span className="Legend--color" style={{backgroundColor: colors[labelIndex % colors.length]}} />
+                    <span className="Legend--label">{label}</span>
                 </div>
             );
         }) }
     </div>
 );
 
-const ChartsItem = ({additionalClassName, style, color, item, itemIndex}) => {
-    additionalClassName = additionalClassName ? ` ${additionalClassName}`: '';
+const ChartsItem = props => {
+
+    if (!props.children) {return null}
+
+    const {style, color, itemIndex, item} = props.children;
+    let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}`: '';
+
     return (
-        <div
-            className={`Charts--item${additionalClassName}`}
-            style={ style }
-            key={ itemIndex }
-        >
-            <b style={{ color: color }}>{ item }</b>
+        <div className={`Charts--item${additionalClassName}`} style={style} key={itemIndex}>
+            <b style={{color}}>{ item }</b>
         </div>
     );
 };
 
 const ChartsSerie = props => {
+
     let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}` : '';
 
-    // Пробрасываем additionalClassName внутрь дочерних элементов
+    // Пробрасываем additionalClassName внутрь props дочерних элементов
     props.children.forEach(children => {
         children.props = Object.assign({}, children.props, { additionalClassName });
     });
 
     return (
-        <div className={`Charts--serie${additionalClassName}`}
-             key={ props.serieIndex }
-             style={{height: props.height}}
-        >
+        <div className={`Charts--serie${additionalClassName}`} key={ props.serieIndex } style={{height: props.height}}>
             <label>{ props.labels[props.serieIndex] }</label>
             {props.children}
         </div>
@@ -63,21 +62,6 @@ const Charts = props => {
             {props.children}
         </div>
     );
-};
-
-const ChartsItems = props => {
-
-    const {style, color, itemIndex, item} = props.children;
-
-    return (
-        <ChartsItem
-            style={style}
-            color={color}
-            itemIndex={itemIndex}
-            item={item}
-            additionalClassName={props.additionalClassName}
-        />
-    )
 };
 
 class App extends React.Component {
@@ -107,17 +91,18 @@ class App extends React.Component {
 
     func1 = (colors, item, itemIndex, max, side) => {
 
-        side = side || 'height';
+        if (colors === undefined || item === undefined || itemIndex === undefined || max === undefined) {
+            console.log('func1 не получила обязательных параметров');
+            return null;
+        }
 
         let color = colors[itemIndex];
-
         let size = item / max * 100;
-
         let style = {
             backgroundColor: color,
             opacity: item / max + .05,
             zIndex: item,
-            [side]: size + '%'
+            [side || 'height']: size + '%'
         };
 
         return {style, color, item, itemIndex}
@@ -126,12 +111,14 @@ class App extends React.Component {
 
     func2 = (colors, item, itemIndex, serie) => {
 
+        if (colors === undefined || item === undefined || itemIndex === undefined || serie === undefined) {
+            console.log('func2 не получила обязательных параметров');
+            return null;
+        }
+
         let sum = serie.reduce((carry, current) => carry + current, 0);
-
         let color = colors[itemIndex];
-
         let size = item / sum * 100;
-
         let style = {
             backgroundColor: color,
             opacity: 1,
@@ -145,13 +132,14 @@ class App extends React.Component {
 
     func3 = (colors, item, itemIndex, serie, max) => {
 
-        let sortedSerie = serie.slice(0);
-        sortedSerie.sort(compareNumbers);
+        if (colors === undefined || item === undefined || itemIndex === undefined || serie === undefined || max === undefined) {
+            console.log('func3 не получила обязательных параметров');
+            return null;
+        }
 
+        let sortedSerie = serie.slice(0).sort(compareNumbers);
         let color = colors[itemIndex];
-
         let size = item / max * 100;
-
         let style = {
             backgroundColor: color,
             opacity: (item / max + .05),
@@ -172,27 +160,24 @@ class App extends React.Component {
             <section>
 
                 <Charts>
-                    <div>
-                        {data.map((serie, serieIndex) => (
-                            <ChartsSerie serieIndex={serieIndex} labels={labels} >
-                                {serie.map((item, itemIndex) =>  (
-                                    <ChartsItems>
-                                        {this.func1(colors, item, itemIndex, max)}
-                                    </ChartsItems>
-                                ))}
-                            </ChartsSerie>
-                        ))}
-                    </div>
-
+                    {data.map((serie, serieIndex) => (
+                        <ChartsSerie serieIndex={serieIndex} labels={labels} >
+                            {serie.map((item, itemIndex) =>  (
+                                <ChartsItem>
+                                    {this.func1(colors, item, itemIndex, max)}
+                                </ChartsItem>
+                            ))}
+                        </ChartsSerie>
+                    ))}
                 </Charts>
 
                 <Charts>
                     {data.map((serie, serieIndex) => (
                         <ChartsSerie additionalClassName="stacked" serieIndex={serieIndex} labels={labels} >
                             {serie.map((item, itemIndex) => (
-                                <ChartsItems>
+                                <ChartsItem>
                                     {this.func2(colors, item, itemIndex, serie)}
-                                </ChartsItems>
+                                </ChartsItem>
                             ))}
                         </ChartsSerie>
                     ))}
@@ -202,9 +187,9 @@ class App extends React.Component {
                     {data.map((serie, serieIndex) => (
                         <ChartsSerie additionalClassName="layered" serieIndex={serieIndex} labels={labels} >
                             {serie.map((item, itemIndex) => (
-                                <ChartsItems>
+                                <ChartsItem>
                                     {this.func3(colors, item, itemIndex, serie, max)}
-                                </ChartsItems>
+                                </ChartsItem>
                             ))}
                         </ChartsSerie>
                     ))}
@@ -214,9 +199,9 @@ class App extends React.Component {
                     {data.map((serie, serieIndex) => (
                         <ChartsSerie serieIndex={serieIndex} labels={series} height="auto" >
                             {serie.map((item, itemIndex) => (
-                                <ChartsItems>
+                                <ChartsItem>
                                     {this.func1(colors, item, itemIndex, max, 'width')}
-                                </ChartsItems>
+                                </ChartsItem>
                             ))}
                         </ChartsSerie>
                     ))}
