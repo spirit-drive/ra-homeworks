@@ -82,10 +82,10 @@ class App extends React.Component {
         this.setState({ data });
     };
 
-    func1 = (colors, item, itemIndex, max, side) => {
+    getParamsForChartsItem1 = (colors, item, itemIndex, max, side) => {
 
         if (colors === undefined || item === undefined || itemIndex === undefined || max === undefined) {
-            console.log('func1 не получила обязательных параметров');
+            console.log('getParamsForChartsItem1 не получила обязательных параметров');
             return null;
         }
 
@@ -102,10 +102,10 @@ class App extends React.Component {
 
     };
 
-    func2 = (colors, item, itemIndex, serie) => {
+    getParamsForChartsItem2 = (colors, item, itemIndex, serie) => {
 
         if (colors === undefined || item === undefined || itemIndex === undefined || serie === undefined) {
-            console.log('func2 не получила обязательных параметров');
+            console.log('getParamsForChartsItem2 не получила обязательных параметров');
             return null;
         }
 
@@ -123,10 +123,10 @@ class App extends React.Component {
 
     };
 
-    func3 = (colors, item, itemIndex, serie, max) => {
+    getParamsForChartsItem3 = (colors, item, itemIndex, serie, max) => {
 
         if (colors === undefined || item === undefined || itemIndex === undefined || serie === undefined || max === undefined) {
-            console.log('func3 не получила обязательных параметров');
+            console.log('getParamsForChartsItem3 не получила обязательных параметров');
             return null;
         }
 
@@ -157,7 +157,7 @@ class App extends React.Component {
                         <ChartsSerie serieIndex={serieIndex} labels={labels} serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
                                 <ChartsItem
-                                    {...this.func1(colors, item, itemIndex, max)}
+                                    {...this.getParamsForChartsItem1(colors, item, itemIndex, max)}
                                     additionalClassName={additionalClassName}
                                 />
                             ))}
@@ -170,7 +170,7 @@ class App extends React.Component {
                         <ChartsSerie additionalClassName="stacked" serieIndex={serieIndex} labels={labels} serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
                                 <ChartsItem
-                                    {...this.func2(colors, item, itemIndex, serie)}
+                                    {...this.getParamsForChartsItem2(colors, item, itemIndex, serie)}
                                     additionalClassName={additionalClassName}
                                 />
                             ))}
@@ -183,7 +183,7 @@ class App extends React.Component {
                         <ChartsSerie additionalClassName="layered" serieIndex={serieIndex} labels={labels} serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
                                 <ChartsItem
-                                    {...this.func3(colors, item, itemIndex, serie, max)}
+                                    {...this.getParamsForChartsItem3(colors, item, itemIndex, serie, max)}
                                     additionalClassName={additionalClassName}
                                 />
                             ))}
@@ -196,7 +196,7 @@ class App extends React.Component {
                         <ChartsSerie serieIndex={serieIndex} labels={series} height="auto" serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
                                 <ChartsItem
-                                    {...this.func1(colors, item, itemIndex, max, 'width')}
+                                    {...this.getParamsForChartsItem1(colors, item, itemIndex, max, 'width')}
                                     additionalClassName={additionalClassName}
                                 />
                             ))}
