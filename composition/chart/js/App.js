@@ -21,14 +21,12 @@ const Legend = ({labels, colors}) => (
 
 const ChartsItem = props => {
 
-    // if (!props.children) {return null}
-
     const {style, color, itemIndex, item} = props;
     let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}`: '';
 
     return (
         <div className={`Charts--item${additionalClassName}`} style={style} key={itemIndex}>
-            <b style={{color}}>{ item }</b>
+            <b style={{color}}>{item}</b>
         </div>
     );
 };
