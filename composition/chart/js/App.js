@@ -22,8 +22,13 @@ const Legend = ({labels, colors}) => (
 const ChartsItem = props => {
 
     const {style, color, itemIndex, item} = props;
-    let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}`: '';
 
+    if (style === undefined && color === undefined && itemIndex === undefined && item === undefined) {
+        console.log('Компонент ChartsItem не получил необходимые props');
+        return null;
+    }
+
+    let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}`: '';
     return (
         <div className={`Charts--item${additionalClassName}`} style={style} key={itemIndex}>
             <b style={{color}}>{item}</b>
@@ -34,7 +39,6 @@ const ChartsItem = props => {
 const ChartsSerie = props => {
 
     let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}` : '';
-
     return (
         <div className={`Charts--serie${additionalClassName}`} key={ props.serieIndex } style={{height: props.height}}>
             <label>{ props.labels[props.serieIndex] }</label>
@@ -49,7 +53,6 @@ ChartsSerie.defaultProps = {
 const Charts = props => {
 
     let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}` : '';
-
     return (
         <div className={`Charts${additionalClassName}`}>
             {props.children(props.data)}
@@ -85,7 +88,7 @@ class App extends React.Component {
     getParamsForChartsItem1 = (colors, item, itemIndex, max, side) => {
 
         if (colors === undefined || item === undefined || itemIndex === undefined || max === undefined) {
-            console.log('getParamsForChartsItem1 не получила обязательных параметров');
+            console.log('Функция getParamsForChartsItem1 не получила обязательных параметров');
             return null;
         }
 
@@ -105,7 +108,7 @@ class App extends React.Component {
     getParamsForChartsItem2 = (colors, item, itemIndex, serie) => {
 
         if (colors === undefined || item === undefined || itemIndex === undefined || serie === undefined) {
-            console.log('getParamsForChartsItem2 не получила обязательных параметров');
+            console.log('Функция getParamsForChartsItem2 не получила обязательных параметров');
             return null;
         }
 
@@ -126,7 +129,7 @@ class App extends React.Component {
     getParamsForChartsItem3 = (colors, item, itemIndex, serie, max) => {
 
         if (colors === undefined || item === undefined || itemIndex === undefined || serie === undefined || max === undefined) {
-            console.log('getParamsForChartsItem3 не получила обязательных параметров');
+            console.log('Функция getParamsForChartsItem3 не получила обязательных параметров');
             return null;
         }
 
