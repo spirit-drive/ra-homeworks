@@ -21,9 +21,9 @@ const Legend = ({labels, colors}) => (
 
 const ChartsItem = props => {
 
-    if (!props.children) {return null}
+    // if (!props.children) {return null}
 
-    const {style, color, itemIndex, item} = props.children;
+    const {style, color, itemIndex, item} = props;
     let additionalClassName = props.additionalClassName ? ` ${props.additionalClassName}`: '';
 
     return (
@@ -158,10 +158,10 @@ class App extends React.Component {
                     {data => data.map((serie, serieIndex) => (
                         <ChartsSerie serieIndex={serieIndex} labels={labels} serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
-
-                                <ChartsItem additionalClassName={additionalClassName}>
-                                    {this.func1(colors, item, itemIndex, max)}
-                                </ChartsItem>
+                                <ChartsItem
+                                    {...this.func1(colors, item, itemIndex, max)}
+                                    additionalClassName={additionalClassName}
+                                />
                             ))}
                         </ChartsSerie>
                     ))}
@@ -171,10 +171,10 @@ class App extends React.Component {
                     {data => data.map((serie, serieIndex) => (
                         <ChartsSerie additionalClassName="stacked" serieIndex={serieIndex} labels={labels} serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
-
-                                <ChartsItem additionalClassName={additionalClassName}>
-                                    {this.func2(colors, item, itemIndex, serie)}
-                                </ChartsItem>
+                                <ChartsItem
+                                    {...this.func2(colors, item, itemIndex, serie)}
+                                    additionalClassName={additionalClassName}
+                                />
                             ))}
                         </ChartsSerie>
                     ))}
@@ -184,10 +184,10 @@ class App extends React.Component {
                     {data => data.map((serie, serieIndex) => (
                         <ChartsSerie additionalClassName="layered" serieIndex={serieIndex} labels={labels} serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
-
-                                <ChartsItem additionalClassName={additionalClassName}>
-                                    {this.func3(colors, item, itemIndex, serie, max)}
-                                </ChartsItem>
+                                <ChartsItem
+                                    {...this.func3(colors, item, itemIndex, serie, max)}
+                                    additionalClassName={additionalClassName}
+                                />
                             ))}
                         </ChartsSerie>
                     ))}
@@ -197,10 +197,10 @@ class App extends React.Component {
                     {data => data.map((serie, serieIndex) => (
                         <ChartsSerie serieIndex={serieIndex} labels={series} height="auto" serie={serie}>
                             {(serie, additionalClassName) => serie.map((item, itemIndex) => (
-
-                                <ChartsItem additionalClassName={additionalClassName}>
-                                    {this.func1(colors, item, itemIndex, max, 'width')}
-                                </ChartsItem>
+                                <ChartsItem
+                                    {...this.func1(colors, item, itemIndex, max, 'width')}
+                                    additionalClassName={additionalClassName}
+                                />
                             ))}
                         </ChartsSerie>
                     ))}
