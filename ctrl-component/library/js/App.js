@@ -20,7 +20,7 @@ class App extends React.Component {
         BookApi.query(query).then(books => {
             this.setState({books})
         });
-    }
+    };
 
     render () {
         return (

@@ -1,5 +1,10 @@
-const SearchBox = () => {
+const SearchBox = ({value, filterBooks}) => {
     return (
-        <input type="text" placeholder="Поиск по названию или автору"/>
+        <input
+            value={value}
+            onChange={event => filterBooks(event.currentTarget.value)}
+            type="text"
+            placeholder="Поиск по названию или автору"
+        />
     );
 };
