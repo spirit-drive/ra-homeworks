@@ -1,5 +1,5 @@
-const CartView = ({ items, isOpen, toggleCart, clearCart }) => (
-  <section className="cart" onClick={() => toggleCart()}>
+const CartView = ({ items, isOpen, toggleCart, clearCart, closeOpen }) => (
+  <section className="cart" onClick={() => {toggleCart(); closeOpen()}}>
     <div>Корзина</div>
     <div className={`
       cart__content 
@@ -10,7 +10,7 @@ const CartView = ({ items, isOpen, toggleCart, clearCart }) => (
         <div>
           <ul>
             {items.map((item, i) =>
-              <li>{item.title} ({item.price} руб.)</li>
+              <li key={i}>{item.title} ({item.price} руб.)</li>
             )}
           </ul>
           <button onClick={() => clearCart()} className="cart__clear">Очистить корзину</button>

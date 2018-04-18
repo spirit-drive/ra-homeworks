@@ -29,4 +29,4 @@ const products = [
   { title: 'Я и Мы', price: 215 },
   { title: 'СССР-Германия', price: 112 },
   { title: 'Занимательная физика', price: 270 },
-]
+];

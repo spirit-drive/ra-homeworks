@@ -10,7 +10,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { items, isOpen } = this.state
+    const { items, isOpen } = this.state;
 
     return (
       <div>
