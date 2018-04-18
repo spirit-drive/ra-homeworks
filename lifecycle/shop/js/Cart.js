@@ -11,7 +11,6 @@ class Cart extends React.Component {
   }
 
   shouldComponentUpdate () {
-    console.log(this.props.items);
     if (this.isOpen) {
 
       this.isOpen = false;
@@ -29,7 +28,6 @@ class Cart extends React.Component {
   }
 
   render() {
-    console.log('render');
     return (
       <CartView {...this.props} closeOpen={this.closeOpen.bind(this)}/>
     );
