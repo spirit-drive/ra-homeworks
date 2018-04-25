@@ -5,12 +5,12 @@ const List = props => {
         switch (item.type) {
             case 'video':
                 return (
-                    <Video {...item} />
+                    item.views < 1000 ? <Video {...item} /> : <Popular {...item} />
                 );
 
             case 'article':
                 return (
-                    <Article {...item} />
+                    item.views > 100 ? <Article {...item} /> : <New {...item} />
                 );
         }
     });

@@ -8,9 +8,11 @@ class App extends React.Component {
       user: {}
     }
   }
+
   auth(user) {
     this.setState({isUnauthorized: false, user});
   }
+
   render() {
     return (
       <div className="App">

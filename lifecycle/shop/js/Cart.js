@@ -1,32 +1,48 @@
 class Cart extends React.Component {
-  constructor (props) {
-    super(props);
-    this.isOpen = false;
-  }
+    constructor (props) {
+        super(props);
+        this.isOpen = false;
+        console.log('Cart constructor', this.props.isOpen);
 
-  closeOpen () {
-      this.isOpen = true;
-  }
-
-  // На мой взгляд этот вариант с дополнительной фунцией работает прекрасно. Но это дополнительная функция...
-  shouldComponentUpdate () {
-
-
-    if (this.isOpen) {
-
-      this.isOpen = false;
-      return true;
-
-    } else if (this.prevItems !== this.props.items && this.props.isOpen) {
-
-      this.prevItems = this.props.items;
-      return true;
-
-    } else {
-
-      return false
     }
-  }
+
+    closeOpen () {
+        this.isOpen = true;
+    }
+
+    componentWillReceiveProps () {
+        console.log('Cart componentWillReceiveProps', this.props.isOpen);
+    }
+
+    componentWillUpdate () {
+        console.log('Cart componentWillUpdate', this.props.isOpen);
+    }
+
+    componentDidUpdate () {
+        this.isOpen = this.props.isOpen;
+        console.log('Cart componentDidUpdate', this.props.isOpen);
+    }
+
+    // На мой взгляд этот вариант с дополнительной фунцией работает прекрасно. Но это дополнительная функция...
+    shouldComponentUpdate () {
+
+        // console.log('Cart shouldComponentUpdate', this.props.isOpen);
+
+        if (this.isOpen) {
+
+            this.isOpen = false;
+            return true;
+
+        } else if (this.prevItems !== this.props.items && this.props.isOpen) {
+
+            this.prevItems = this.props.items;
+            return true;
+
+        } else {
+
+            return false
+        }
+    }
 
     // shouldComponentUpdate () {
     //     /* Я не знаю, как здесь сделать условие, которое бы отвечало всем требованиям.
@@ -51,10 +67,10 @@ class Cart extends React.Component {
 
 
     render() {
-    console.log('render');
-    return (
-      <CartView {...this.props} closeOpen={this.closeOpen.bind(this)}/>
-    );
-  }
+        console.log('render');
+        return (
+            <CartView {...this.props} closeOpen={this.closeOpen.bind(this)}/>
+        );
+    }
 
 }

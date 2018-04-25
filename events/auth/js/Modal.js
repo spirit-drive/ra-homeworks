@@ -4,6 +4,7 @@ const Modal = props => {
   if (props.isHidden) {
     return null;
   }
+
   return (
     <div className="Modal">
       {props.children}
