@@ -2,9 +2,16 @@
 
 function getDateTimeWitUpgrade(Component) {
 
-    return function (props) {
+    return class extends React.Component  {
 
-        function getMessage(unitOfTime, kind) {
+        constructor (props) {
+            super(props);
+            if (this.props.date) {
+                this.props.date = this.upgradeDate(this.props.date);
+            }
+        }
+
+        getMessage(unitOfTime, kind) {
             let result;
             let declinationMinutes = ['минут', 'минута', 'минуты'];
             let declinationHours = ['часов', 'час', 'часа'];
@@ -44,7 +51,7 @@ function getDateTimeWitUpgrade(Component) {
             return result;
         }
 
-        function upgradeDate(date) {
+        upgradeDate(date) {
             let timePast = (new Date).getTime() - new Date(date);
             let minutePast = ~~(timePast / 1000 / 60);
             let hourPast = ~~(minutePast / 60);
@@ -54,20 +61,18 @@ function getDateTimeWitUpgrade(Component) {
             if (minutePast < 0) {
                 message = 'опубликовано в будующем :)';
             } else if (minutePast < 60) {
-                message = `${getMessage(minutePast, 'minute')} назад`;
+                message = `${this.getMessage(minutePast, 'minute')} назад`;
             } else if (hourPast < 24) {
-                message = `${getMessage(hourPast, 'hour')} назад`;
+                message = `${this.getMessage(hourPast, 'hour')} назад`;
             } else {
-                message = `${getMessage(dayPast, 'day')} назад`;
+                message = `${this.getMessage(dayPast, 'day')} назад`;
             }
             return message;
         }
 
-        if (props.date) {
-            props.date = upgradeDate(props.date);
+        render () {
+            return <Component {...this.props} />
         }
-
-        return <Component {...props} />
     }
 }
 
