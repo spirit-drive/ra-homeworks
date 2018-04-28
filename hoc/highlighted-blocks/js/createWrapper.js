@@ -1,12 +1,18 @@
 'use strict';
 
 function createWrapper(Component, className, label) {
-    return function (props) {
-        return (
-            <div className={className}>
-                <span className="label">{label}</span>
-                {Component.call(this, props)}
-            </div>
-        )
+    return class extends React.Component {
+        constructor (props) {
+            super(props);
+        }
+
+        render () {
+            return (
+                <div className={className}>
+                    <span className="label">{label}</span>
+                    <Component {...this.props} />
+                </div>
+            )
+        }
     }
 }

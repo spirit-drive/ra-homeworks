@@ -1,6 +1,6 @@
 let functionsHandlerDate = {
 
-    convertDate (date) {
+    convertInToDateObj (date) {
         return new Date(date.date);
     },
 
@@ -17,8 +17,8 @@ let functionsHandlerDate = {
     },
 
     sortDate(dateA, dateB) {
-        let a = this.convertDate(dateA);
-        let b = this.convertDate(dateB);
+        let a = this.convertInToDateObj(dateA);
+        let b = this.convertInToDateObj(dateB);
 
         return this.sort(a, b);
     },
@@ -40,12 +40,33 @@ let functionsHandlerDate = {
 
     handleDataForMonth (data) {
         data.sort(this.sortDateForMonth.bind(this));
-        return data.map(item => {return {month: this.getMount(item.date), amount: item.amount}});
+        return this.aggregationOnData(data, 'month', this.getMount.bind(this));
     },
 
     handleDataForYear (data) {
         data.sort(this.sortDate.bind(this));
-        return data.map(item => {return {year: this.getYear(item.date), amount: item.amount}});
+        return this.aggregationOnData(data, 'year', this.getYear.bind(this));
+    },
+
+    aggregationOnData(data, newLiteralForData, funcForNewDataLiteral) {
+        let newData = [];
+        let year;
+        let yearInItem;
+        let i = -1;
+
+        data.forEach(item => {
+
+            yearInItem = funcForNewDataLiteral(item.date);
+
+            if (year === yearInItem) {
+                newData[i].amount += item.amount;
+            } else {
+                newData.push({[newLiteralForData]: yearInItem, amount: item.amount});
+                year = yearInItem;
+                ++i;
+            }
+        });
+        return newData;
     },
 
 

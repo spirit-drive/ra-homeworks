@@ -67,7 +67,7 @@ function getDateTimeWitUpgrade(Component) {
             props.date = upgradeDate(props.date);
         }
 
-        return Component.call(this, props)
+        return <Component {...props} />
     }
 }
 
