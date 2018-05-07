@@ -1,6 +1,7 @@
 const FontSelector = ({fonts, selectedFont, onSelect}) => {
 
-    // Я так и не понял, зачем здесь нужен selectedFont?
+    let onClick = font => () => onSelect(font);
+
     return (
         <div className="font-picker">
             {fonts.map((font, i) => {
@@ -9,9 +10,7 @@ const FontSelector = ({fonts, selectedFont, onSelect}) => {
                 return (
                 <div className="grid center font-item">
 
-                    {/*Какой из вариантов лучше и почему? */}
-                    {/*<input onClick={() => {onSelect(font)}} type="radio" name="font" value={id} id={id} />*/}
-                    <input onClick={e => {onSelect(JSON.parse(e.currentTarget.value))}} type="radio" name="font" value={JSON.stringify(font)} id={id} />
+                    <input onClick={onClick(font)} type="radio" name="font" value={id} id={id} />
 
                     <label htmlFor={id} className="grid-1">
                         <PictureFont text={font.name} path={font.path}/>

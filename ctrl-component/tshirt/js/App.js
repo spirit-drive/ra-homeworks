@@ -15,14 +15,9 @@ class App extends React.Component {
         this.setState({fonts: AbcApi.getFonts()});
     }
 
-    selectFont = (selectedFont) => {
-        this.setState({selectedFont});
-    };
+    selectFont = selectedFont => this.setState({selectedFont});
 
-    setText = (text) => {
-        this.setState({text});
-    };
-
+    setText = text => this.setState({text: text.toLowerCase().match(/[a-z\n]*/g).join('')});
 
     renderLines () {
         if (!this.state.selectedFont) return null;

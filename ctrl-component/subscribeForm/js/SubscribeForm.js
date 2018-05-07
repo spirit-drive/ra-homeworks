@@ -20,11 +20,10 @@ const FormGroup = ({children}) => {
     )
 };
 
-const InputEmail = ({onChange, refElem}) => {
+const InputEmail = ({onChange}) => {
     return (
         <input
             onChange={onChange}
-            ref={refElem}
             type="email"
             id="input-email"
             placeholder="Email"
@@ -39,12 +38,14 @@ class SubscribeForm extends React.Component {
         super(props);
         this.state = {
             condition: true
-        }
+        };
+
+        this.onChange = this.onChangeEmail.bind(this);
     }
 
-    onChangeEmail () {
+    onChangeEmail (event) {
         this.setState({
-            condition: this.inputEmail.validity.valid
+            condition: event.currentTarget.validity.valid
         })
     }
 
@@ -57,10 +58,7 @@ class SubscribeForm extends React.Component {
             <div className="subscribe__form">
                 <Form className={this.getClassNameForForm()}>
                     <FormGroup >
-                        <InputEmail
-                            onChange={this.onChangeEmail.bind(this)}
-                            refElem={elem => this.inputEmail = elem}
-                        />
+                        <InputEmail onChange={this.onChange}/>
                     </FormGroup>
                 </Form>
             </div>
