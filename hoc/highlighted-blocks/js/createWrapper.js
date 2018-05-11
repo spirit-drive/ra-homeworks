@@ -1,18 +1,24 @@
 'use strict';
 
-function createWrapper(Component, className, label) {
+function withWrapper(WrappedComponent) {
     return class extends React.Component {
-        constructor (props) {
+        constructor(props) {
             super(props);
         }
 
-        render () {
-            return (
-                <div className={className}>
-                    <span className="label">{label}</span>
-                    <Component {...this.props} />
-                </div>
-            )
+        render() {
+            if (this.props.type === 'video') {
+                if (this.props.views >= 1000) {
+                    return <Popular><WrappedComponent {...this.props} /></Popular>
+                }
+                return <WrappedComponent {...this.props} />;
+            }
+            if (this.props.type === 'article') {
+                if (this.props.views <= 100) {
+                    return <New><WrappedComponent {...this.props} /></New>
+                }
+                return <WrappedComponent {...this.props} />;
+            }
         }
-    }
+    };
 }

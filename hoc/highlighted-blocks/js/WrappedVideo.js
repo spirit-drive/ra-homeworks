@@ -1,0 +1,1 @@
+const WrappedVideo = withWrapper(Video);

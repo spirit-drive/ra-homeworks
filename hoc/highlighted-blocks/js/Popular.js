@@ -1,12 +1,10 @@
 'use strict';
 
-// const Popular = props => {
-//     return (
-//         <div className="wrap-item wrap-item-popular">
-//             <span className="label">Popular!</span>
-//             {props.children}
-//         </div>
-//     )
-// };
-
-const Popular = createWrapper(Video, 'wrap-item wrap-item-popular', 'Popular!');
+const Popular = props => {
+    return (
+        <div className="wrap-item wrap-item-popular">
+            <span className="label">Popular!</span>
+            {props.children}
+        </div>
+    )
+};

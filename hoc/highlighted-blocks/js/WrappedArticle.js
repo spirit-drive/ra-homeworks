@@ -1,0 +1,1 @@
+const WrappedArticle = withWrapper(Article);

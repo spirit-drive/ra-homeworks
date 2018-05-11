@@ -17,7 +17,7 @@ class App extends React.Component {
 
     selectFont = selectedFont => this.setState({selectedFont});
 
-    setText = text => this.setState({text: text.toLowerCase().match(/[a-z\n]*/g).join('')});
+    setText = text => this.setState({text});
 
     renderLines () {
         if (!this.state.selectedFont) return null;
